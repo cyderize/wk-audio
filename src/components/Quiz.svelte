@@ -111,7 +111,7 @@
       <Statistics
         {correct}
         {incorrect}
-        remaining={questions.length - correct - incorrect}
+        remaining={questions.length - currentIndex}
       />
     </div>
     <div class="choices">
