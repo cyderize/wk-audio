@@ -152,13 +152,13 @@ const getSubjects = async (reset) => {
       abortController.signal,
       key,
       result,
-      subjectsUpdated
+      subjectsUpdated,
     );
     const newAsgsUpdated = await fetchSrsStages(
       abortController.signal,
       key,
       result,
-      asgsUpdated
+      asgsUpdated,
     );
     localStorage.setItem("wk-audio.subjectsUpdated", newSubjectsUpdated);
     localStorage.setItem("wk-audio.asgsUpdated", newAsgsUpdated);
