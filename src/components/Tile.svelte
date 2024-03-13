@@ -1,10 +1,25 @@
 <script>
   /** @typedef {import('../lib/db').Subject} Subject */
+
+  import { createEventDispatcher } from "svelte";
+  import { selectedVoice } from "../lib/db";
+
   /** @type {Subject} */
   export let subject;
+
+  const dispatch = createEventDispatcher();
+
+  function play() {
+    const audio =
+      subject.audio.find((item) => item.voiceId === $selectedVoice) ||
+      subject.audio[0];
+    dispatch("play", { src: audio.url });
+  }
 </script>
 
-<div class={`tile srs-${subject.srsStage}`}>
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class={`tile srs-${subject.srsStage}`} on:click={play}>
   {subject.characters}
 </div>
 
@@ -13,6 +28,11 @@
     padding: 0.1rem 0.3rem;
     border: solid 1px var(--border-color);
     border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .tile:hover {
+    filter: brightness(120%) saturate(120%);
   }
 
   .srs-1 {

@@ -200,6 +200,12 @@ export const currentSubjectsByLevel = derived(subjects, ($subjects) => {
   return result;
 });
 
+export const levels = derived(
+  currentSubjectsByLevel,
+  ($currentSubjectsByLevel) =>
+    Object.keys($currentSubjectsByLevel).map((key) => parseInt(key, 10)),
+);
+
 export const voices = derived(subjects, ($subjects) => {
   /** @type {{[id: number]: string}} */
   const result = {};

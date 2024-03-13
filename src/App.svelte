@@ -2,17 +2,19 @@
   import Config from "./components/Config.svelte";
   import Tile from "./components/Tile.svelte";
   import Quiz from "./components/Quiz.svelte";
-  import { apiKey, currentSubjectsByLevel } from "./lib/db";
+  import { apiKey, currentSubjectsByLevel, levels } from "./lib/db";
 
   /** @type {number | null} */
   let quizLevel = null;
+
+  let audio = ''
 </script>
 
 <main>
   {#if quizLevel === null}
     <Config />
     <section class="content">
-      {#if $apiKey && Object.keys($currentSubjectsByLevel).length === 0}
+      {#if $apiKey && $levels.length === 0}
         <div class="loader">
           <div class="lds-ring">
             <div />
@@ -22,7 +24,8 @@
           </div>
         </div>
       {/if}
-      {#each Object.keys($currentSubjectsByLevel) as level}
+      <audio src={audio} autoplay />
+      {#each $levels as level}
         <div class="level">
           <div class="heading">
             <h3>Level {level}</h3>
@@ -34,7 +37,7 @@
           </div>
           <div class="tiles">
             {#each $currentSubjectsByLevel[level] as subject}
-              <Tile {subject} />
+              <Tile {subject} on:play={e => audio = e.detail.src}/>
             {/each}
           </div>
         </div>
