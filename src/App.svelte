@@ -3,11 +3,19 @@
   import Tile from "./components/Tile.svelte";
   import Quiz from "./components/Quiz.svelte";
   import { apiKey, currentSubjectsByLevel, levels } from "./lib/db";
+  import { tick } from "svelte";
 
   /** @type {number | null} */
   let quizLevel = null;
 
-  let audio = ''
+  let audioElement;
+  let audio = "";
+
+  async function play(src) {
+    audio = src;
+    await tick();
+    audioElement.play();
+  }
 </script>
 
 <main>
@@ -24,7 +32,7 @@
           </div>
         </div>
       {/if}
-      <audio src={audio} autoplay />
+      <audio bind:this={audioElement} src={audio} />
       {#each $levels as level}
         <div class="level">
           <div class="heading">
@@ -37,7 +45,7 @@
           </div>
           <div class="tiles">
             {#each $currentSubjectsByLevel[level] as subject}
-              <Tile {subject} on:play={e => audio = e.detail.src}/>
+              <Tile {subject} on:play={(e) => play(e.detail.src)} />
             {/each}
           </div>
         </div>
